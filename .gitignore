@@ -1,6 +1,6 @@
-**.aux
-**.fdb_latexmk
-**.fls
-**.synctex
-**.toc
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex
+*.toc
 

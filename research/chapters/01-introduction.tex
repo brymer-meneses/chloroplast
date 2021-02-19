@@ -75,16 +75,15 @@ Research and Training Institute and the Philippine Statistics Authority, only
 
 \newpage 
 
-\section{Conceptual Framework}
 
 \section{Theoretical Framework}
 % TODO 
 % 1. Bolster the statements using studies 
-% 2. Make a graph indicating the "theory" of the study
+
 \begin{figure}[h!]
       \centering
       \includegraphics[scale=0.5]{01-intro-theoretical-framework.pdf}
-      \caption{Theoretical Framework}
+      \caption{The Theoretical Framework of the Study}
 \end{figure}
 
 Convolutional Neural Networks has been experimentally shown 
@@ -105,6 +104,43 @@ control measures like pesticides can lead to further losses in time,
 money and may even lead to more plant losses. This is why it is essential
 to diagnose plants early on. \\ 
 
+\section{Conceptual Framework}
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[scale=0.5]{01-intro-conceptual-framework.pdf}
+      \caption{The Conceptual Framework of the Study}
+\end{figure}
+
+This study focuses on achieving the optimal effectiveness of the CNN Model that 
+will be embedded in the mobile application. \\ 
+
+In evaluating the effectiveness of a Neural Network Model 
+one metric that is used is the F1 Score. It is defined as the harmonic mean 
+of Precision and Recall or phrased mathematically as:
+\[ 
+ \text{F1 Score} \: = \: \frac{2}{\frac{1}{\text{Precision}} \: + \: 
+\frac{1}{\text{Recall}}} 
+\]
+
+In addition to the F1 Score, accuracy will also be used as a metric to 
+quantify the effectiveness of the model. It is defined as:
+\[
+      \text{Accuracy} \: = \: \frac{\text{Precision} \: + \: 
+      \text{Recall}}{\text{Total Number of Test Images}}
+\]
+
+Finally, the speed of classification will also be used to 
+gauge the effectivenes of the model. These 3 metrics will be used 
+quantitatively measure the effectivenes of the model. \\
+
+During the training process of the Model, there will be intervening variables 
+that this study will not consider these are: Number of Training Epochs, 
+Number of Training Images, Learning Rate, Quality of Training Images.
+
+
+
+
 \section{Statement of the Problem}
 
     \begin{enumerate}
@@ -113,6 +149,7 @@ to diagnose plants early on. \\
     In terms of:
 
         \begin{enumerate}
+            \item Accuracy
             \item F1 Score 
             \item Speed of Classification 
         \end{enumerate}
@@ -129,6 +166,19 @@ to diagnose plants early on. \\
         \item The model is not comparable to other methods of detecting plant
               disease.
     \end{enumerate}
+
+\section{Scope and Delimitation}
+This study will only focus to the effectiveness of 
+CNN Models to diagnose the following plants 
+apple, cherry, citrus, corn, grape, peach, pepper,
+potato, rice, strawberry (this selection is tentative). 
+This is due to the fact that without training data on a 
+certain type of plant CNN Models will be inconclusive with 
+regards to the diagnosis of that specific plant. \\
+
+This study does not include the effects of these factors: Number of Training Epochs, 
+Number of Training Images, Learning Rate, Quality of Training Images 
+that may affect the training and effectivess of the model. 
 
 \section{Significance of the Study}
 The significance of the study lies on the
@@ -181,11 +231,26 @@ their plants and prevent further crop losses.
               that can access data and use it to learn for themselves.
 
         \item Classification \\
-              - classification refers to a predictive modeling problem where a
+              - Classification refers to a predictive modeling problem where a
               class label is predicted for a given example of input data.
               
         \item Inference \\
               -  Inference refers to the process of using a trained machine learning algorithm to make a prediction
+
+        \item Recall \\
+              - Recall (also known as sensitivity) is the fraction of relevant instances that were retrieved.
+
+        \item Precision
+              - precision (also called positive predictive value) is the fraction of relevant instances among 
+              the retrieved instances.
+      
+        \item Learning Rate \\
+              - Learning rate is a tuning parameter in an optimization algorithm that determines the step size
+               at each iteration while moving toward a minimum of a loss function.     
+            
+        \item Epoch \\
+              - epoch is a term used in machine learning and indicates the number of passes of the entire
+               training dataset the machine learning algorithm has completed. 
     \end{itemize}
 
 

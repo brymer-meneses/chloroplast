@@ -31,9 +31,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  image_picker: ^0.6.7+10
+  image_picker: ^0.6.7+22
   relative_scale: ^1.1.0
-  percent_indicator: ^2.1.7+2
+  percent_indicator: ^2.1.9+1
   tflite_flutter: ^0.5.0
   tflite_flutter_helper: ^0.1.2
 

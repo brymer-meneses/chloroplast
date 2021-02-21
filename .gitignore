@@ -1,3 +1,5 @@
+# Ignore LaTeX Construction Files
+
 *.aux
 *.fdb_latexmk
 *.fls

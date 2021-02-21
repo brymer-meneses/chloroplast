@@ -5,8 +5,8 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 # TODO
 **Train CNN Models**
 - [ ] Plant Classifier
-- [x] Apple
-- [x] Corn
+- [x] <ins> Apple </ins>
+- [x] <ins> Corn </ins>
 - [ ] Cherry
 - [ ] Citrus
 - [ ] Grape

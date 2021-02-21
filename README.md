@@ -4,9 +4,9 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 (Work in Progress)
 # TODO
 **Train CNN Models**
-- [ ] Plant Classifier
-- [x] <ins> Apple </ins>
-- [x] <ins> Corn </ins>
+
+- [x] ~~Apple ~~
+- [x] ~~Corn ~~
 - [ ] Cherry
 - [ ] Citrus
 - [ ] Grape
@@ -15,6 +15,7 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 - [ ] Potato
 - [ ] Rice
 - [ ] Strawberry
+- [ ] Plant Classifier
 
 **App Development**
 - [ ] Build the App Skeleton

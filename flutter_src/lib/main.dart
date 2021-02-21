@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
 // Other Files
 import './services/imageBox.dart';
@@ -27,6 +28,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   File _image;
 
+  void _getImageFromGallery() async {
+    final picker = ImagePicker();
+    var pickedImage = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = File(pickedImage.path);
+    });
+  }
+
   void _getImageFromCamera() async {
     final picker = ImagePicker();
     var pickedImage = await picker.getImage(source: ImageSource.camera);
@@ -34,6 +44,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _image = File(pickedImage.path);
     });
+  }
+
+  void _startClassifyingImage() async {
+    final interpreter =
+        await tfl.Interpreter.fromAsset('EfficientNet-Lite4.tflite');
   }
 
   @override
@@ -47,6 +62,14 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           ImageBox(_image),
+          _image != null
+              ? Container(
+                  child: FloatingActionButton.extended(
+                  onPressed: () {},
+                  backgroundColor: Colors.blueGrey,
+                  label: Text('Classify Image'),
+                ))
+              : Container()
         ],
       ),
       floatingActionButton: Container(
@@ -55,7 +78,7 @@ class _HomePageState extends State<HomePage> {
             label: Text('Choose an image'),
             isExtended: true,
             backgroundColor: Colors.blue,
-            onPressed: _getImageFromCamera,
+            onPressed: _getImageFromGallery,
             icon: Icon(Icons.add_a_photo),
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -1,66 +1,29 @@
-import 'dart:math';
-import 'dart:io';
-
-import 'package:image/image.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'classifier.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
-abstract class PretrainedModel {
-  Interpreter interpreter;
-  final String _path;
-
-  List<int> _inputShape;
-  List<int> _outputShape;
-
+class PretrainedModel extends Classifier {
+  PretrainedModel({int numThreads}) : super(numThreads: numThreads);
   TensorImage _inputImage;
-  TensorBuffer _outputBuffer;
 
-  TfLiteType _outputType = TfLiteType.uint8;
+  @override
+  String get modelName => 'EfficientNet-Lite4.tflite';
+  @override
+  String get labelsFileName => '';
+  @override
+  NormalizeOp get preProcessNormalizeOp => NormalizeOp(0, 255);
+  @override
+  NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);
 
-  PretrainedModel(this._path);
-
-  NormalizeOp get preProcessNormalizeOp;
-  NormalizeOp get postProcessNormalizeOp;
-
-  var _probabilityProcessor;
-
-  Future<void> loadModel() async {
-    try {
-      interpreter = await Interpreter.fromAsset(_path);
-      print("Successfully loaded the interpreter");
-
-      _inputShape = interpreter.getInputTensor(0).shape;
-      _outputShape = interpreter.getOutputTensor(0).shape;
-      _outputType = interpreter.getOutputTensor(0).type;
-
-      _outputBuffer = TensorBuffer.createFixedSize(_outputShape, _outputType);
-      _probabilityProcessor =
-          TensorProcessorBuilder().add(postProcessNormalizeOp).build();
-    } catch (e) {
-      print("Failed to load the model, caught exception: ${e.toString()}");
-    }
-  }
-
-  TensorImage _preProcessImage() {
-    int cropSize = min(_inputImage.height, _inputImage.width);
-    return ImageProcessorBuilder()
-        .add(ResizeWithCropOrPadOp(cropSize, cropSize))
-        .add(ResizeOp(
-            _inputShape[1], _inputShape[2], ResizeMethod.NEAREST_NEIGHBOUR))
-        .add(preProcessNormalizeOp)
-        .build()
-        .process(_inputImage);
-  }
+  @override
+  // ignore: missing_return
+  Future<void> loadLabels() {}
 
   TensorBuffer run(Image image) {
-    if (interpreter == null) {
-      throw StateError('Cannot run inference, Interpreter is null');
-    }
     _inputImage = TensorImage.fromImage(image);
-    _inputImage = _preProcessImage();
+    _inputImage = preProcess();
 
-    interpreter.run(_inputImage.buffer, _outputBuffer.getBuffer);
-    interpreter.close();
-    return _outputBuffer;
+    interpreter.run(_inputImage.buffer, outputBuffer.getBuffer());
+
+    return outputBuffer;
   }
 }

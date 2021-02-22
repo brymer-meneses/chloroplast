@@ -1,11 +1,13 @@
 // Packages
 import 'dart:io';
+import 'package:Plant_Doctor/ml_services/pretrainedModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
 // Other Files
 import './services/imageBox.dart';
+import './ml_services/pretrainedModel.dart';
 
 void main() => runApp(MainApp());
 
@@ -27,6 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   File _image;
+  PretrainedModel _efficientNet = new PretrainedModel();
 
   void _getImageFromGallery() async {
     final picker = ImagePicker();
@@ -46,10 +49,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _startClassifyingImage() async {
-    final interpreter =
-        await tfl.Interpreter.fromAsset('EfficientNet-Lite4.tflite');
-  }
+  void _startClassifyingImage() async {}
 
   @override
   Widget build(BuildContext context) {

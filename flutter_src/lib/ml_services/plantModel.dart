@@ -8,7 +8,9 @@ class PlantModel extends Classifier {
   final String _plantName;
   final PretrainedModel _pretrainedModel;
 
-  PlantModel(this._plantName, this._pretrainedModel);
+  PlantModel(this._plantName, this._pretrainedModel) {
+    loadLabels();
+  }
 
   @override
   String get labelsFileName => "plant_models/labels/$_plantName.txt";

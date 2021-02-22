@@ -20,7 +20,6 @@ abstract class Classifier {
   List<int> inputShape;
   List<int> outputShape;
 
-  TensorImage _inputImage;
   TensorBuffer outputBuffer;
 
   TfLiteType _outputType = TfLiteType.uint8;
@@ -45,7 +44,7 @@ abstract class Classifier {
     }
 
     loadModel();
-    loadLabels();
+    // loadLabels();
   }
 
   Future<void> loadModel() async {
@@ -75,15 +74,15 @@ abstract class Classifier {
     }
   }
 
-  TensorImage preProcess() {
-    int cropSize = min(_inputImage.height, _inputImage.width);
+  TensorImage preProcess(TensorImage inputImage) {
+    int cropSize = min(inputImage.height, inputImage.width);
     return ImageProcessorBuilder()
         .add(ResizeWithCropOrPadOp(cropSize, cropSize))
         .add(ResizeOp(
             inputShape[1], inputShape[2], ResizeMethod.NEAREST_NEIGHBOUR))
         .add(preProcessNormalizeOp)
         .build()
-        .process(_inputImage);
+        .process(inputImage);
   }
 
   Category predict(Image image) {
@@ -91,14 +90,14 @@ abstract class Classifier {
       throw StateError('Cannot run inference, Intrepreter is null');
     }
     final pres = DateTime.now().millisecondsSinceEpoch;
-    _inputImage = TensorImage.fromImage(image);
-    _inputImage = preProcess();
+    TensorImage inputImage = preProcess(TensorImage.fromImage(image));
+
     final pre = DateTime.now().millisecondsSinceEpoch - pres;
 
     print('Time to load image: $pre ms');
 
     final runs = DateTime.now().millisecondsSinceEpoch;
-    interpreter.run(_inputImage.buffer, outputBuffer.getBuffer());
+    interpreter.run(inputImage.buffer, outputBuffer.getBuffer());
     final run = DateTime.now().millisecondsSinceEpoch - runs;
 
     print('Time to run inference: $run ms');

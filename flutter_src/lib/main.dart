@@ -1,12 +1,12 @@
 // Packages
 import 'dart:io';
-import 'package:Plant_Doctor/ml_services/pretrainedModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
+import 'package:image/image.dart' as img;
 
 // Other Files
 import './services/imageBox.dart';
+import './ml_services/plantModel.dart';
 import './ml_services/pretrainedModel.dart';
 
 void main() => runApp(MainApp());
@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   File _image;
-  PretrainedModel _efficientNet = new PretrainedModel();
+  final PretrainedModel efficientNet = PretrainedModel();
 
   void _getImageFromGallery() async {
     final picker = ImagePicker();
@@ -49,7 +49,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _startClassifyingImage() async {}
+  void _startClassifyingImage(File image) async {
+    img.Image imageInput = img.decodeImage(image.readAsBytesSync());
+    PlantModel apple = PlantModel('apple', efficientNet);
+    //PlantModel corn = PlantModel('corn', efficientNet);
+
+    var predictions = apple.predict(imageInput);
+    print(predictions);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +72,11 @@ class _HomePageState extends State<HomePage> {
           _image != null
               ? Container(
                   child: FloatingActionButton.extended(
-                  onPressed: () {},
-                  backgroundColor: Colors.blueGrey,
-                  label: Text('Classify Image'),
-                ))
+                    onPressed: () => _startClassifyingImage(_image),
+                    backgroundColor: Colors.blueGrey,
+                    label: Text('Classify Image'),
+                  ),
+                )
               : Container()
         ],
       ),

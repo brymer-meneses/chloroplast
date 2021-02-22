@@ -15,13 +15,8 @@ class PretrainedModel extends Classifier {
   @override
   NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);
 
-  @override
-  // ignore: missing_return
-  Future<void> loadLabels() {}
-
   TensorBuffer run(Image image) {
-    _inputImage = TensorImage.fromImage(image);
-    _inputImage = preProcess();
+    _inputImage = preProcess(TensorImage.fromImage(image));
 
     interpreter.run(_inputImage.buffer, outputBuffer.getBuffer());
 

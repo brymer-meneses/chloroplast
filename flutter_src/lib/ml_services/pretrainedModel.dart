@@ -1,5 +1,6 @@
 import 'classifier.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
+import 'package:image/image.dart';
 
 class PretrainedModel extends Classifier {
   PretrainedModel({int numThreads}) : super(numThreads: numThreads);

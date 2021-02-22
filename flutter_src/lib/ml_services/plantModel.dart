@@ -8,8 +8,6 @@ class PlantModel extends Classifier {
   final String _plantName;
   final PretrainedModel _pretrainedModel;
 
-  TensorImage _inputImage;
-
   PlantModel(this._plantName, this._pretrainedModel);
 
   @override
@@ -26,7 +24,14 @@ class PlantModel extends Classifier {
 
   @override
   Category predict(Image image) {
-    TensorBuffer _outputBuffer = _pretrainedModel.run(image);
-    interpreter.run()
+    TensorBuffer _pretrainedModelOutput = _pretrainedModel.run(image);
+    interpreter.run(_pretrainedModelOutput, outputBuffer.getBuffer());
+
+    Map<String, double> labeledProb =
+        TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))
+            .getMapWithFloatValue();
+    final pred = getTopProbability(labeledProb);
+
+    return Category(pred.key, pred.value);
   }
 }

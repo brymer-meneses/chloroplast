@@ -27,7 +27,7 @@ abstract class Classifier {
 
   final int _labelsLength = 1001;
 
-  var _probabilityProcessor;
+  var probabilityProcessor;
 
   List<String> labels;
 
@@ -59,7 +59,7 @@ abstract class Classifier {
       _outputType = interpreter.getOutputTensor(0).type;
 
       outputBuffer = TensorBuffer.createFixedSize(outputShape, _outputType);
-      _probabilityProcessor =
+      probabilityProcessor =
           TensorProcessorBuilder().add(postProcessNormalizeOp).build();
     } catch (e) {
       print('Unable to create interpreter, Caught Exception: ${e.toString()}');
@@ -103,9 +103,9 @@ abstract class Classifier {
 
     print('Time to run inference: $run ms');
 
-    Map<String, double> labeledProb = TensorLabel.fromList(
-            labels, _probabilityProcessor.process(outputBuffer))
-        .getMapWithFloatValue();
+    Map<String, double> labeledProb =
+        TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))
+            .getMapWithFloatValue();
     final pred = getTopProbability(labeledProb);
 
     return Category(pred.key, pred.value);

@@ -37,6 +37,7 @@ dev_dependencies:
   tflite_flutter: ^0.5.0
   tflite_flutter_helper: ^0.1.2
   logger: ^0.9.4
+  path_provider: ^1.6.27
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

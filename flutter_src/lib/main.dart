@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   File _image;
-  final PretrainedModel efficientNet = PretrainedModel();
+  final PretrainedModel efficientNet = new PretrainedModel();
 
   void _getImageFromGallery() async {
     final picker = ImagePicker();
@@ -51,7 +51,8 @@ class _HomePageState extends State<HomePage> {
 
   void _startClassifyingImage(File image) async {
     img.Image imageInput = img.decodeImage(image.readAsBytesSync());
-    PlantModel apple = PlantModel('apple', efficientNet);
+    // ignore: await_only_futures
+    final PlantModel apple = PlantModel('apple', efficientNet);
     //PlantModel corn = PlantModel('corn', efficientNet);
 
     var predictions = apple.predict(imageInput);

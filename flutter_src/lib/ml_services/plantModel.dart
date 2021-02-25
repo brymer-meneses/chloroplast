@@ -9,14 +9,15 @@ class PlantModel extends Classifier {
   final PretrainedModel _pretrainedModel;
 
   PlantModel(this._plantName, this._pretrainedModel) {
+    //loadModel();
     loadLabels();
   }
 
   @override
-  String get labelsFileName => "plant_models/labels/$_plantName.txt";
-
+  String get labelsFileName => "assets/$_plantName.txt";
+  // flutter_src\assets\plant_models\models\apple.tflite
   @override
-  String get modelName => 'plant_models/models/$_plantName.tflite';
+  String get modelName => 'assets/plant_models/models/$_plantName.tflite';
 
   @override
   NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);
@@ -27,7 +28,7 @@ class PlantModel extends Classifier {
   @override
   Category predict(Image image) {
     TensorBuffer _pretrainedModelOutput = _pretrainedModel.run(image);
-    interpreter.run(_pretrainedModelOutput, outputBuffer.getBuffer());
+    interpreter.run(_pretrainedModelOutput, outputBuffer);
 
     Map<String, double> labeledProb =
         TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))

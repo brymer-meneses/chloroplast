@@ -3,6 +3,7 @@
 // Copyright 2020, Amish Garg, All Rights Reserved
 // Licensed under the Apache License, Version 2.0 (the "License")
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:image/image.dart';
@@ -22,7 +23,7 @@ abstract class Classifier {
 
   TensorBuffer outputBuffer;
 
-  TfLiteType _outputType = TfLiteType.uint8;
+  TfLiteType outputType = TfLiteType.uint8;
 
   final int _labelsLength = 1001;
 
@@ -55,9 +56,9 @@ abstract class Classifier {
 
       inputShape = interpreter.getInputTensor(0).shape;
       outputShape = interpreter.getOutputTensor(0).shape;
-      _outputType = interpreter.getOutputTensor(0).type;
+      outputType = interpreter.getOutputTensor(0).type;
 
-      outputBuffer = TensorBuffer.createFixedSize(outputShape, _outputType);
+      outputBuffer = TensorBuffer.createFixedSize(outputShape, outputType);
       probabilityProcessor =
           TensorProcessorBuilder().add(postProcessNormalizeOp).build();
     } catch (e) {
@@ -70,7 +71,8 @@ abstract class Classifier {
     if (labels.length == _labelsLength) {
       print('Labels loaded successfully');
     } else {
-      print('Unable to load labels');
+      print(
+          'Unable to load labels expected: $_labelsLength got ${labels.length}');
     }
   }
 

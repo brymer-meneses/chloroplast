@@ -35,7 +35,9 @@ abstract class Classifier {
 
   Future<void> loadModel() async {
     try {
-      final String modelName = modelPath.split('/')[-1];
+      final String modelName = (modelPath.split('/')).length > 1
+          ? modelPath.split('/').last
+          : modelPath.split('/')[0];
 
       log("loadModel[1] Loading Model: $modelName");
       interpreter = await Interpreter.fromAsset(modelPath);
@@ -46,15 +48,17 @@ abstract class Classifier {
       outputShape = interpreter.getOutputTensor(0).shape;
       outputType = interpreter.getOutputTensor(0).type;
 
-      log("\n Model Name: $modelName");
+      log("\nModel Name: $modelName");
       log("\t inputShape: $inputShape \n \t outputShape: $outputShape \n \t outputType: $outputType");
 
-      log("loadModel[4] Instantiating essential variables");
+      log("\nloadModel[4] Instantiating essential variables");
+
       outputBuffer = TensorBuffer.createFixedSize(outputShape, outputType);
       probabilityProcessor =
           TensorProcessorBuilder().add(postProcessNormalizeOp).build();
+      log("loadModel[5] Success!");
     } catch (e) {
-      log("The function loadModel failed. Unable to create interpreter. Caught Exception: ${e.toString}");
+      log("The function loadModel failed. Unable to create interpreter. Caught Exception: ${e.toString()}");
     }
   }
 
@@ -64,7 +68,7 @@ abstract class Classifier {
       log("loadLabels[1] Loading Labels from $labelsPath");
       labels = await FileUtil.loadLabels(labelsPath);
       log("loadLabels[2] Labels loaded successfully");
-      log("$labels");
+      log("loadLabels[3] Labels: $labels");
     } catch (e) {
       log("The function loadLabels failed. Caught Exception: ${e.toString}");
     }
@@ -88,30 +92,32 @@ abstract class Classifier {
     return preProccessedImage;
   }
 
-  Category predict(Image image) {
+  TensorBuffer runOnImage(Image image) {
     if (interpreter == null) {
       throw StateError(
           'The function predict failed. Cannot run inference, Intrepreter is null');
     }
-
-    final pres = DateTime.now().millisecondsSinceEpoch;
+    log("runOnImage[1] Processing Image");
     TensorImage inputImage = preProcess(
         TensorImage.fromImage(image), inputShape, preProcessNormalizeOp);
-
-    final pre = DateTime.now().millisecondsSinceEpoch - pres;
-
-    log('predict[1] Time to load image: $pre ms');
-
-    log("predict[2] Running inference on image");
-    final runs = DateTime.now().millisecondsSinceEpoch;
+    log("runOnImage[2] Running Inference");
     interpreter.run(inputImage.buffer, outputBuffer.getBuffer());
-    final run = DateTime.now().millisecondsSinceEpoch - runs;
+    return outputBuffer;
+  }
 
-    log('predict[3] Time to run inference: $run ms');
+  TensorBuffer runOnTensor(TensorBuffer input) {
+    if (interpreter == null) {
+      throw StateError(
+          'The function predict failed. Cannot run inference, Intrepreter is null');
+    }
+    interpreter.run(input.buffer, outputBuffer.getBuffer());
+    return outputBuffer;
+  }
 
-    Map<String, double> labeledProb =
-        TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))
-            .getMapWithFloatValue();
+  Category getResults(TensorBuffer _outputBuffer) {
+    Map<String, double> labeledProb = TensorLabel.fromList(
+            labels, probabilityProcessor.process(_outputBuffer))
+        .getMapWithFloatValue();
     final pred = getTopProbability(labeledProb);
 
     return Category(pred.key, pred.value);

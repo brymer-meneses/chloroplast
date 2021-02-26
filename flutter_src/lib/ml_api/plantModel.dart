@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
-import 'package:image/image.dart';
+import 'package:image/image.dart' as img;
 
 import 'classifier.dart';
 import 'pretrainedModel.dart';
@@ -26,16 +28,13 @@ class PlantModel extends Classifier {
   @override
   NormalizeOp get preProcessNormalizeOp => NormalizeOp(0, 1);
 
-  @override
-  Category predict(Image image) {
-    TensorBuffer _pretrainedModelOutput = _pretrainedModel.run(image);
-    interpreter.run(_pretrainedModelOutput, outputBuffer.getBuffer());
+  Category runInference(File image) {
+    img.Image imageInput = img.decodeImage(image.readAsBytesSync());
+    TensorBuffer _pretrainedModelOutput =
+        _pretrainedModel.runOnImage(imageInput);
+    TensorBuffer _plantModelOutput = super.runOnTensor(_pretrainedModelOutput);
 
-    Map<String, double> labeledProb =
-        TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))
-            .getMapWithFloatValue();
-    final pred = getTopProbability(labeledProb);
-
-    return Category(pred.key, pred.value);
+    Category results = super.getResults(_plantModelOutput);
+    return results;
   }
 }

@@ -50,12 +50,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _startClassifyingImage(File image) async {
-    img.Image imageInput = img.decodeImage(image.readAsBytesSync());
-    // ignore: await_only_futures
-    final PlantModel apple = await PlantModel('apple', efficientNet);
+    final PlantModel apple = PlantModel('apple', efficientNet);
     //PlantModel corn = PlantModel('corn', efficientNet);
 
-    var predictions = apple.predict(imageInput);
+    var predictions = apple.runInference(image);
     print(predictions);
   }
 

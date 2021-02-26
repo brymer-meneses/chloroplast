@@ -7,8 +7,6 @@ class PretrainedModel extends Classifier {
     loadModel();
   }
 
-  TensorImage _inputImage;
-
   @override
   String get modelPath => 'EfficientNet-Lite4.tflite';
 
@@ -22,12 +20,5 @@ class PretrainedModel extends Classifier {
   @override
   NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);
 
-  TensorBuffer run(Image image) {
-    _inputImage = Classifier.preProcess(
-        TensorImage.fromImage(image), inputShape, preProcessNormalizeOp);
-
-    interpreter.run(_inputImage.buffer, outputBuffer.getBuffer());
-
-    return outputBuffer;
-  }
+  
 }

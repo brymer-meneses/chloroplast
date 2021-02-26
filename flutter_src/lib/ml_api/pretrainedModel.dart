@@ -8,10 +8,14 @@ class PretrainedModel extends Classifier {
 
   @override
   String get modelName => 'EfficientNet-Lite4.tflite';
+
   @override
   String get labelsFileName => '';
+
   @override
+  // Mimic the image processing that was used on the training data
   NormalizeOp get preProcessNormalizeOp => NormalizeOp(0, 255);
+
   @override
   NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);
 

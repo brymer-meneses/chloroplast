@@ -67,8 +67,12 @@ abstract class Classifier {
     try {
       log("loadLabels[1] Loading Labels from $labelsPath");
       labels = await FileUtil.loadLabels(labelsPath);
-      log("loadLabels[2] Labels loaded successfully");
-      log("loadLabels[3] Labels: $labels");
+      if (labels.length == outputShape.last) {
+        log("loadLabels[2] labels loaded successfully");
+        log("loadLabels[3] labels: $labels");
+      } else {
+        log("Unable to load labels, \n\texpected classes: ${outputShape.last} \n\tgot: ${labels.length}");
+      }
     } catch (e) {
       log("The function loadLabels failed. Caught Exception: ${e.toString}");
     }
@@ -114,29 +118,14 @@ abstract class Classifier {
     return outputBuffer;
   }
 
-  Category getResults(TensorBuffer _outputBuffer) {
+  Map<String, double> getResults(TensorBuffer _outputBuffer) {
     Map<String, double> labeledProb = TensorLabel.fromList(
             labels, probabilityProcessor.process(_outputBuffer))
         .getMapWithFloatValue();
-    final pred = getTopProbability(labeledProb);
 
-    return Category(pred.key, pred.value);
+    return labeledProb;
   }
 }
 
-MapEntry<String, double> getTopProbability(Map<String, double> labeledProb) {
-  var pq = PriorityQueue<MapEntry<String, double>>(compare);
-  pq.addAll(labeledProb.entries);
-
-  return pq.first;
-}
-
-int compare(MapEntry<String, double> e1, MapEntry<String, double> e2) {
-  if (e1.value > e2.value) {
-    return -1;
-  } else if (e1.value == e2.value) {
-    return 0;
-  } else {
-    return 1;
-  }
-}
+// TODO
+// Make a function that sorts "labeledProp"

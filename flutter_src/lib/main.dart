@@ -79,11 +79,13 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           ImageBox(_image),
           _image != null
-              ? Container(
-                  child: FloatingActionButton.extended(
-                    onPressed: () => _startClassifyingImage(_image),
-                    backgroundColor: Colors.blueGrey,
-                    label: Text('Classify Image'),
+              ? Center(
+                  child: Container(
+                    child: FloatingActionButton.extended(
+                      onPressed: () => _startClassifyingImage(_image),
+                      backgroundColor: Colors.blueGrey,
+                      label: Text('Classify Image'),
+                    ),
                   ),
                 )
               : Container()

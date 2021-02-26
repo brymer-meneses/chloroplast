@@ -28,13 +28,13 @@ class PlantModel extends Classifier {
   @override
   NormalizeOp get preProcessNormalizeOp => NormalizeOp(0, 1);
 
-  Category runInference(File image) {
+  Map<String, double> runInference(File image) {
     img.Image imageInput = img.decodeImage(image.readAsBytesSync());
     TensorBuffer _pretrainedModelOutput =
         _pretrainedModel.runOnImage(imageInput);
     TensorBuffer _plantModelOutput = super.runOnTensor(_pretrainedModelOutput);
 
-    Category results = super.getResults(_plantModelOutput);
+    Map<String, double> results = super.getResults(_plantModelOutput);
     return results;
   }
 }

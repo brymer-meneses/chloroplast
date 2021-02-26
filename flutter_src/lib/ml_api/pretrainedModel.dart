@@ -19,6 +19,4 @@ class PretrainedModel extends Classifier {
 
   @override
   NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);
-
-  
 }

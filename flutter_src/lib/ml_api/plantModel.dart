@@ -17,7 +17,7 @@ class PlantModel extends Classifier {
   String get labelsFileName => "assets/$_plantName.txt";
   // flutter_src\assets\plant_models\models\apple.tflite
   @override
-  String get modelName => 'assets/plant_models/models/$_plantName.tflite';
+  String get modelName => 'plant_models/models/$_plantName.tflite';
 
   @override
   NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);

@@ -50,9 +50,10 @@ abstract class Classifier {
 
   Future<void> loadModel() async {
     try {
+      print('Loading Model: $modelName');
       interpreter =
           await Interpreter.fromAsset(modelName, options: _interpreterOptions);
-      print('Interpreter Created Successfully');
+      print('The interpreter for $modelName was created successfully');
 
       inputShape = interpreter.getInputTensor(0).shape;
       outputShape = interpreter.getOutputTensor(0).shape;

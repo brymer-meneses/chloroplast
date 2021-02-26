@@ -7,7 +7,7 @@ class PretrainedModel extends Classifier {
   TensorImage _inputImage;
 
   @override
-  String get modelName => 'assets/EfficientNet-Lite4.tflite';
+  String get modelName => 'EfficientNet-Lite4.tflite';
   @override
   String get labelsFileName => '';
   @override

@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 
 // Other Files
-import './services/imageBox.dart';
-import './ml_services/plantModel.dart';
-import './ml_services/pretrainedModel.dart';
+import './widgets/imageBox.dart';
+import './ml_api/plantModel.dart';
+import './ml_api/pretrainedModel.dart';
 
 void main() => runApp(MainApp());
 
@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   File _image;
-  final PretrainedModel efficientNet = new PretrainedModel();
+  final PretrainedModel efficientNet = PretrainedModel();
 
   void _getImageFromGallery() async {
     final picker = ImagePicker();

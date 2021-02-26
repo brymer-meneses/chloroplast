@@ -35,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   PlantModel _apple;
   PlantModel _corn;
 
+  bool areModelsReady = false;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +44,8 @@ class _HomePageState extends State<HomePage> {
 
     _apple = PlantModel('apple', _efficientNet);
     _corn = PlantModel('corn', _efficientNet);
+
+    areModelsReady = true;
   }
 
   void _getImageFromGallery() async {

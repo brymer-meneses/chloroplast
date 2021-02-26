@@ -4,9 +4,9 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 
 # Datasets that will be used: (Tentative)
 
-1. [PlantVillage Dataset] (https://data.mendeley.com/datasets/tywbtsjrjv/1)
-2. [Rice Diseases Image Dataset] (https://www.kaggle.com/minhhuy2810/rice-diseases-image-dataset)
-3. [Citrus Fruits and Leaves Dataset] (https://data.mendeley.com/datasets/3f83gxmv57/2)
+1. [PlantVillage Dataset](https://data.mendeley.com/datasets/tywbtsjrjv/1)
+2. [Rice Diseases Image Dataset](https://www.kaggle.com/minhhuy2810/rice-diseases-image-dataset)
+3. [Citrus Fruits and Leaves Dataset](https://data.mendeley.com/datasets/3f83gxmv57/2)
 
 (Work in Progress)
 

@@ -1,113 +1,111 @@
+// Modified From:
+// https://github.com/am15h/tflite_flutter_helper/blob/master/example/image_classification/lib/classifier.dart
+// Copyright 2020, Amish Garg, All Rights Reserved
+// Licensed under the Apache License, Version 2.0 (the "License")
+
 import 'dart:io';
 import 'dart:math';
 
-import 'package:Plant_Doctor/services/logger.dart';
-
 import 'package:image/image.dart';
 import 'package:collection/collection.dart';
+import 'package:logger/logger.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
-// For debugging purposes
-Logger log = Logger(showLogs: true);
 
 abstract class Classifier {
-  Classifier({int numThreads}) {
-    InterpreterOptions _interpreterOptions = InterpreterOptions();
-    if (numThreads != null) {
-      _interpreterOptions.threads = numThreads;
-    }
-  }
-
-  // ML Variables
-  String get modelPath;
-  String get labelsPath;
   Interpreter interpreter;
-  List<int> inputShape, outputShape;
+  InterpreterOptions _interpreterOptions;
+
+  var logger = Logger();
+
+  List<int> inputShape;
+  List<int> outputShape;
+
+  TensorBuffer outputBuffer;
 
   TfLiteType outputType = TfLiteType.uint8;
-  TensorBuffer outputBuffer;
+
+  final int _labelsLength = 1001;
+
+  var probabilityProcessor;
+
+  List<String> labels;
+
+  String get modelName;
+  String get labelsFileName;
 
   NormalizeOp get preProcessNormalizeOp;
   NormalizeOp get postProcessNormalizeOp;
 
-  var probabilityProcessor;
+  Classifier({int numThreads}) {
+    _interpreterOptions = InterpreterOptions();
+
+    if (numThreads != null) {
+      _interpreterOptions.threads = numThreads;
+    }
+    loadModel();
+  }
 
   Future<void> loadModel() async {
     try {
-      final String modelName = modelPath.split('/')[-1];
+      print('Loading Model: $modelName');
+      interpreter =
+          await Interpreter.fromAsset(modelName, options: _interpreterOptions);
+      print('The interpreter for $modelName was created successfully');
 
-      log("loadModel[1] Loading Model: $modelName");
-      interpreter = await Interpreter.fromAsset(modelPath);
-      log("loadModel[2] Successfully Loaded: $modelName");
-
-      log("loadModel[3] Getting Information from $modelName");
       inputShape = interpreter.getInputTensor(0).shape;
+      print(inputShape);
       outputShape = interpreter.getOutputTensor(0).shape;
       outputType = interpreter.getOutputTensor(0).type;
 
-      log("\n Model Name: $modelName");
-      log("\t inputShape: $inputShape \n \t outputShape: $outputShape \n \t outputType: $outputType");
-
-      log("loadModel[4] Instantiating essential variables");
       outputBuffer = TensorBuffer.createFixedSize(outputShape, outputType);
+      print("$modelName's outputBuffer: ${outputBuffer.getBuffer()}");
       probabilityProcessor =
           TensorProcessorBuilder().add(postProcessNormalizeOp).build();
     } catch (e) {
-      log("The function loadModel failed. Unable to create interpreter. Caught Exception: ${e.toString}");
+      print('Unable to create interpreter, Caught Exception: ${e.toString()}');
     }
   }
 
-  List<String> labels;
   Future<void> loadLabels() async {
-    try {
-      log("loadLabels[1] Loading Labels from $labelsPath");
-      labels = await FileUtil.loadLabels(labelsPath);
-      log("loadLabels[2] Labels loaded successfully");
-      log("$labels");
-    } catch (e) {
-      log("The function loadLabels failed. Caught Exception: ${e.toString}");
+    labels = await FileUtil.loadLabels(labelsFileName);
+    if (labels.length == _labelsLength) {
+      print('Labels loaded successfully');
+    } else {
+      print(
+          'Unable to load labels expected: $_labelsLength got ${labels.length}');
     }
   }
 
-  static TensorImage preProcess(
-    TensorImage inputImage,
-    List<int> inputShape,
-    NormalizeOp preProcessNormalizeOp,
-  ) {
-    log("preProcess[1] Performing preprocessing to the image");
+  TensorImage preProcess(TensorImage inputImage) {
     int cropSize = min(inputImage.height, inputImage.width);
-    TensorImage preProccessedImage = ImageProcessorBuilder()
+    print('from classifier.dart: $inputShape');
+    return ImageProcessorBuilder()
         .add(ResizeWithCropOrPadOp(cropSize, cropSize))
         .add(ResizeOp(
             inputShape[1], inputShape[2], ResizeMethod.NEAREST_NEIGHBOUR))
         .add(preProcessNormalizeOp)
         .build()
         .process(inputImage);
-    log("preProcess[2] Successfully preprocessed image");
-    return preProccessedImage;
   }
 
   Category predict(Image image) {
     if (interpreter == null) {
-      throw StateError(
-          'The function predict failed. Cannot run inference, Intrepreter is null');
+      throw StateError('Cannot run inference, Intrepreter is null');
     }
-
     final pres = DateTime.now().millisecondsSinceEpoch;
-    TensorImage inputImage = preProcess(
-        TensorImage.fromImage(image), inputShape, preProcessNormalizeOp);
+    TensorImage inputImage = preProcess(TensorImage.fromImage(image));
 
     final pre = DateTime.now().millisecondsSinceEpoch - pres;
 
-    log('predict[1] Time to load image: $pre ms');
+    print('Time to load image: $pre ms');
 
-    log("predict[2] Running inference on image");
     final runs = DateTime.now().millisecondsSinceEpoch;
     interpreter.run(inputImage.buffer, outputBuffer.getBuffer());
     final run = DateTime.now().millisecondsSinceEpoch - runs;
 
-    log('predict[3] Time to run inference: $run ms');
+    print('Time to run inference: $run ms');
 
     Map<String, double> labeledProb =
         TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))
@@ -115,6 +113,12 @@ abstract class Classifier {
     final pred = getTopProbability(labeledProb);
 
     return Category(pred.key, pred.value);
+  }
+
+  void close() {
+    if (interpreter != null) {
+      interpreter.close();
+    }
   }
 }
 

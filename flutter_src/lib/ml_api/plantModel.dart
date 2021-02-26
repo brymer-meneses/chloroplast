@@ -8,16 +8,17 @@ class PlantModel extends Classifier {
   final String _plantName;
   final PretrainedModel _pretrainedModel;
 
-  PlantModel(this._plantName, this._pretrainedModel) {
-    //loadModel();
+  PlantModel(this._plantName, this._pretrainedModel, {int numThreads})
+      : super(numThreads: numThreads) {
+    loadModel();
     loadLabels();
   }
 
   @override
-  String get labelsFileName => "assets/$_plantName.txt";
+  String get labelsPath => "assets/plant_models/labels/$_plantName.txt";
   // flutter_src\assets\plant_models\models\apple.tflite
   @override
-  String get modelName => 'plant_models/models/$_plantName.tflite';
+  String get modelPath => 'plant_models/models/$_plantName.tflite';
 
   @override
   NormalizeOp get postProcessNormalizeOp => NormalizeOp(0, 1);
@@ -28,7 +29,7 @@ class PlantModel extends Classifier {
   @override
   Category predict(Image image) {
     TensorBuffer _pretrainedModelOutput = _pretrainedModel.run(image);
-    interpreter.run(_pretrainedModelOutput, outputBuffer);
+    interpreter.run(_pretrainedModelOutput, outputBuffer.getBuffer());
 
     Map<String, double> labeledProb =
         TensorLabel.fromList(labels, probabilityProcessor.process(outputBuffer))

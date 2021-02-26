@@ -1,6 +1,7 @@
 // Packages
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 
@@ -29,7 +30,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   File _image;
-  final PretrainedModel efficientNet = PretrainedModel();
+  final PretrainedModel _efficientNet = new PretrainedModel();
+
+  PlantModel _apple;
+  PlantModel _corn;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    _apple = PlantModel('apple', _efficientNet);
+    _corn = PlantModel('corn', _efficientNet);
+  }
 
   void _getImageFromGallery() async {
     final picker = ImagePicker();
@@ -50,10 +63,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _startClassifyingImage(File image) async {
-    final PlantModel apple = PlantModel('apple', efficientNet);
-    //PlantModel corn = PlantModel('corn', efficientNet);
-
-    var predictions = apple.runInference(image);
+    var predictions = _apple.runInference(image);
     print(predictions);
   }
 

@@ -1,6 +1,7 @@
-# flutter_src
+# Chloroplast
 
-A new Flutter project.
+A mobile application that uses Machine Learning to detect a variety 
+of plant diseases from images of plant leaves.
 
 ## Getting Started
 

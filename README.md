@@ -31,3 +31,9 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 - [x] ~~Build ML (TensorFlow Lite) API~~
 - [ ] Build the App Skeleton
 - [ ] Design and integrate clean UI
+
+**Website Development**
+
+- [ ] Build TensorFlow.js API
+- [ ] Build the Website Skeleton
+- [ ] Design and integrate clean UI

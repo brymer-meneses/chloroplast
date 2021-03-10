@@ -18,7 +18,7 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 - [x] ~~Corn~~
 - [ ] Cherry
 - [ ] Citrus
-- [ ] Grape
+- [x] ~~Grape~~
 - [ ] Peach
 - [ ] Pepper
 - [ ] Potato

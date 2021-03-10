@@ -21,7 +21,7 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 - [x] ~~Grape~~
 - [ ] Peach
 - [ ] Pepper
-- [ ] Potato
+- [x] Potato
 - [ ] Rice
 - [ ] Strawberry
 - [ ] Plant Classifier

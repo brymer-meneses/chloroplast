@@ -23,7 +23,7 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 - [x] Pepper
 - [x] Potato
 - [ ] Rice
-- [ ] Strawberry
+- [x] Strawberry
 - [ ] Plant Classifier
 
 **App Development**

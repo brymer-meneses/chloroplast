@@ -14,13 +14,13 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 
 **Train CNN Models**
 
-- [x] ~~Apple~~
-- [x] ~~Corn~~
+- [x] Apple
+- [x] Corn
 - [ ] Cherry
 - [ ] Citrus
-- [x] ~~Grape~~
+- [x] Grape
 - [ ] Peach
-- [ ] Pepper
+- [x] Pepper
 - [x] Potato
 - [ ] Rice
 - [ ] Strawberry
@@ -28,7 +28,7 @@ A mobile application that uses Machine Learning to detect plant diseases from im
 
 **App Development**
 
-- [x] ~~Build ML (TensorFlow Lite) API~~
+- [x] Build ML (TensorFlow Lite) API
 - [ ] Build the App Skeleton
 - [ ] Design and integrate clean UI
 

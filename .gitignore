@@ -1,9 +1,10 @@
-# Ignore LaTeX Construction Files
+# IDE
+*.vscode
 
+# Ignore LaTeX Construction Files
 *.aux
 *.fdb_latexmk
 *.fls
 *.synctex.gz
 *.toc
 *.log 
-

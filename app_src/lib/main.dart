@@ -1,4 +1,5 @@
 // Packages
+import 'dart:collection';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:image/image.dart' as img;
 import './widgets/imageBox.dart';
 import './ml_api/plantModel.dart';
 import './ml_api/pretrainedModel.dart';
+import './ml_api/initializeModels.dart';
 
 void main() => runApp(MainApp());
 
@@ -32,18 +34,16 @@ class _HomePageState extends State<HomePage> {
   File _image;
   final PretrainedModel _efficientNet = new PretrainedModel();
 
-  PlantModel _apple;
-  PlantModel _corn;
-
   bool areModelsReady = false;
+  HashMap<String, PlantModel> models;
 
   @override
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    _apple = PlantModel('apple', _efficientNet);
-    _corn = PlantModel('corn', _efficientNet);
+    var initializer = InitializeModels(_efficientNet);
+    models = initializer.getModels();
 
     areModelsReady = true;
   }

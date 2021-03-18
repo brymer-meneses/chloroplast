@@ -66,8 +66,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _startClassifyingImage(File image) async {
-    var predictions = _apple.runInference(image);
+  void _startClassifyingImage(File image, String modelName) async {
+    // TODO 
+    // Create a button to select what model will be used to 
+    // classifiy the imageo
+
+    PlantModel plantModel = models[modelName]
+    var predictions = plantModel.runInference(image);
     print(predictions);
   }
 
@@ -86,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               ? Center(
                   child: Container(
                     child: FloatingActionButton.extended(
-                      onPressed: () => _startClassifyingImage(_image),
+                      onPressed: () => _startClassifyingImage(_image, 'apple'), // Temporary
                       backgroundColor: Colors.blueGrey,
                       label: Text('Classify Image'),
                     ),

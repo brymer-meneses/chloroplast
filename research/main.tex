@@ -34,7 +34,10 @@
 \lhead{Chapter \thechapter}
 \rhead{\leftmark}
 \renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
-\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\headrulewidth}{1pt}
+
+% Line Separator
+\newcommand{\sep}{\vspace{-1cm}\noindent\rule{\textwidth}{0.4pt}}
 
 \title{
     Smartphone Based Plant Disease Classification using
@@ -58,9 +61,11 @@
     % \tableofcontents
 
     \chapter{Introduction}
+    \sep
     \input{chapters/01-introduction.tex}
     
     \chapter{Methodology}
+    \sep
     \input{chapters/02-methodology.tex}
 
 \end{document}

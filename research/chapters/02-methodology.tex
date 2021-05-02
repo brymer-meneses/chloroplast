@@ -9,14 +9,15 @@ included in this chapter.
 
 % Research Design 
 \section{Research Design}
-The research design used in this study is \emph{exploratory research}.
-
-
-This design is usually used in Machine Learning researches. 
+The research design that is used in this study is 
+is \emph{Single Group Design} which is a superset 
+of \emph{Experimental Research Design}.
 
 \section{Locale and Population of the Study}
-The study is conducted at the comfort of the researcher's residence. 
-
+The training of the various CNN Models and evaluation happened 
+at a Google Colaboratory Session online. This was done because, 
+a Google Colaboratory Session provides access to Graphical Processing 
+Units (GPU) which massively speeds up the process of training the CNN Models.
 
 \section{Data Gathering Instrument}
 Data is the most important part of any type of Machine Learning Research. 
@@ -33,7 +34,7 @@ available.
         - The PlantVillage dataset consists of $54303$ healthy and unhealthy leaf 
          images divided into $38$ categories by species and disease. 
     
-         \begin{figure}[h!]
+         \begin{figure}[H]
             \centering 
             \includegraphics[scale=0.6]{plant-village-examples.png}
             \caption{Example of images in the Plant Village Dataset}
@@ -44,7 +45,7 @@ available.
         - The dataset contains $759$ images of healthy and unhealthy images for both Citrus fruits and
          leaves collectively. Each image contains $256 \times 256$ dimensions with $72$ dpi resolution.  \\ 
 
-         \begin{figure}[h!]
+         \begin{figure}[H]
             \centering 
             \includegraphics[scale=0.6]{citrus-leaves-examples.png}
             \caption{Example of images in the Citrus Leaves Dataset}
@@ -59,10 +60,25 @@ available.
 
 \section{Data Gathering Procedure}
 In gathering the data required to conduct the study, the 
-researcher downloaded the 
+researcher downloaded the datasets from the following links.
+
+\begin{itemize}
+    \item https://data.mendeley.com/datasets/tywbtsjrjv/1
+    \item https://data.mendeley.com/datasets/3f83gxmv57/2
+\end{itemize}
 
 
 \section{Statistical Treatment}
+After downloading the datasets through their official links, 
+the datasets were then aggregated to a \emph{Google Colaboratory} 
+session and were split into three sections, \emph{Training}, \emph{Validation} and 
+\emph{Testing}, in a ratio of $ 60\% $, $ 20\% $, $ 20\% $ respectively. \\
+
+The training dataset is used for training the various CNN Models while the Validation dataset 
+gives an unbias representation of the accuracy of the model during the training process. Lastly, 
+The testing dataset is used to gauge the accuracy of the model in detecting various plant diseases.
+This was done to prevent the models from overfitting, and improve 
+the accuracy of each model in classifying new data. 
 
 
-% TODO 1. Link to the datasets
+

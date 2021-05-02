@@ -36,7 +36,7 @@ available.
     
          \begin{figure}[H]
             \centering 
-            \includegraphics[scale=0.6]{plant-village-examples.png}
+            \includegraphics[scale=0.45]{plant-village-examples.png}
             \caption{Example of images in the Plant Village Dataset}
          \end{figure}
 
@@ -47,7 +47,7 @@ available.
 
          \begin{figure}[H]
             \centering 
-            \includegraphics[scale=0.6]{citrus-leaves-examples.png}
+            \includegraphics[scale=0.45]{citrus-leaves-examples.png}
             \caption{Example of images in the Citrus Leaves Dataset}
          \end{figure}
 
@@ -69,6 +69,8 @@ researcher downloaded the datasets from the following links.
 
 
 \section{Statistical Treatment}
+
+\subsection{Preprocessing of the Data}
 After downloading the datasets through their official links, 
 the datasets were then aggregated to a \emph{Google Colaboratory} 
 session and were split into three sections, \emph{Training}, \emph{Validation} and 
@@ -80,5 +82,29 @@ The testing dataset is used to gauge the accuracy of the model in detecting vari
 This was done to prevent the models from overfitting, and improve 
 the accuracy of each model in classifying new data. 
 
+\subsection{Training the Models}
+To improve the overall accuracy and reduce the size 
+of each models, the researcher opted to use a pre-trained model. 
+A pretrained model is a type of model that was trained on a large 
+dataset typical using a huge amount of computing power and time 
+required to train. 
 
+By introducing new layers on top of the pretrained model, the final 
+CNN model will take less time to train and have improved accuracy in
+classifying plant diseases.
+
+
+\subsection{Testing the Models}
+The ``F1 Score'' and ``Accuracy'' were the metrics
+used to gauge the effectiveness of the model. 
+
+\[ 
+ \text{F1 Score} \: = \: \frac{2}{\frac{1}{\text{Precision}} \: + \: 
+\frac{1}{\text{Recall}}} 
+\]
+
+\[
+      \text{Accuracy} \: = \: \frac{\text{Precision} \: + \: 
+      \text{Recall}}{\text{Total Number of Test Images}}
+\]
 
